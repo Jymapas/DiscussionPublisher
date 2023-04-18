@@ -27,31 +27,33 @@ namespace DiscussionPublisherAPI
                 loggingBuilder.ClearProviders();
                 loggingBuilder.AddSerilog(dispose: true);
             });
-
-            services.AddSingleton(_configuration);
-            services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseEndpoints(endpoints =>
+            try
             {
-                endpoints.MapControllers();
-            });
+                app.UseHttpsRedirection();
+                app.UseRouting();
+                app.UseErrorHandlingMiddleware();
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                });
 
-            if (env.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                if (env.IsDevelopment())
+                {
+                    app.UseSwagger();
+                    app.UseSwaggerUI();
+                }
+
+                app.ApplicationServices.GetService<ITelegramBotService>()?.StartBot();
             }
-
-            app.UseMiddleware<ErrorHandlingMiddleware>();
-
-            app.ApplicationServices.GetService<ITelegramBotService>()?.StartBot();
+            catch (Exception ex)
+            {
+                var logger = app.ApplicationServices.GetRequiredService<ILogger<Startup>>();
+                logger.LogError(ex, "An error occurred while configuring the application.");
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace DiscussionPublisherAPI.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DiscussionPublisherAPI.Models
 {
     public class PackageInfo
     {
@@ -8,7 +10,9 @@
             Description = description;
         }
 
+        [Required]
         public string Header { get; set; }
+        [Required]
         public string Description { get; set; }
 
         public string GetMessage()

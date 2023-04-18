@@ -43,9 +43,20 @@ namespace DiscussionPublisherAPI
 
                 switch (ex)
                 {
-                    case NotFoundException:
-                        errorResponse.StatusCode = (int)HttpStatusCode.NotFound;
-                        errorResponse.Message = "Resource not found.";
+                    case ArgumentException argumentException:
+                        _logger.LogWarning($"Invalid argument: {argumentException.Message}");
+                        errorResponse.StatusCode = (int)HttpStatusCode.BadRequest;
+                        errorResponse.Message = argumentException.Message;
+                        break;
+                    case NotImplementedException notImplementedException:
+                        _logger.LogWarning($"Not implemented: {notImplementedException.Message}");
+                        errorResponse.StatusCode = (int)HttpStatusCode.NotImplemented;
+                        errorResponse.Message = notImplementedException.Message;
+                        break;
+                    case TimeoutException timeoutException:
+                        _logger.LogWarning($"Timeout occurred: {timeoutException.Message}");
+                        errorResponse.StatusCode = (int)HttpStatusCode.RequestTimeout;
+                        errorResponse.Message = timeoutException.Message;
                         break;
                     case ValidationException validationException:
                         _logger.LogWarning($"Validation failed: {validationException.Message}");
