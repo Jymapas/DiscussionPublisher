@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DiscussionPublisher.TelegramBot
+﻿namespace DiscussionPublisher.TelegramBot
 {
-    internal class Class1
+    internal class Keys
     {
+        internal static string BotKey = "enter_your_bot_key";
+        internal static int ChannelId = 0; // enter your channel id
     }
 }
