@@ -1,4 +1,5 @@
-﻿using Telegram.Bot.Types;
+﻿using Microsoft.Extensions.Configuration;
+using Telegram.Bot.Types;
 using Telegram.Bot;
 
 namespace DiscussionPublisher.TelegramBot
@@ -9,7 +10,12 @@ namespace DiscussionPublisher.TelegramBot
 
         public void StartBot()
         {
-            _botClient = new TelegramBotClient();
+            var botConfig = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+
+            _botClient = new TelegramBotClient(botConfig["TelegramBotSettings:ApiKey"]);
         }
 
         public async Task SendMessageToChannelAsync(string channelName, string message)
