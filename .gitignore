@@ -364,3 +364,4 @@ FodyWeavers.xsd
 
 # Config-files
 **/launchSettings.json
+**/Keys.cs
