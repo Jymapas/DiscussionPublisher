@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Telegram.Bot.Types;
 
 namespace DiscussionPublisher.TelegramBot
 {
     public interface ITelegramBotService
     {
         void StartBot();
+        Task SendMessageToChannelAsync(string channelName, string message);
+        Task HandleUpdateAsync(Update update);
     }
 }

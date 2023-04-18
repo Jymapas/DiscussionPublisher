@@ -1,6 +1,9 @@
-﻿using DiscussionPublisherAPI.Models;
+﻿using DiscussionPublisher.TelegramBot;
+using DiscussionPublisherAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace DiscussionPublisherAPI.Controllers.Tests
 {
@@ -8,31 +11,38 @@ namespace DiscussionPublisherAPI.Controllers.Tests
     public class PackageInfoControllerTests
     {
         [TestMethod]
-        public void CreatePackageInfo_ReturnsBadRequest_WhenModelIsInvalid()
+        public async Task CreatePackageInfo_ReturnsBadRequest_WhenModelIsInvalid()
         {
             // Arrange
-            var controller = new PackageInfoController();
-            var packageInfo = new PackageInfo { Header = "", Description = "" };
+            var telegramBotService = new Mock<ITelegramBotService>();
+            var logger = new NullLogger<PackageInfoController>();
+            var controller = new PackageInfoController(telegramBotService.Object, logger);
+            var packageInfo = new PackageInfo("", "");
 
             // Act
-            var result = controller.CreatePackageInfo(packageInfo);
+            var result = await controller.CreatePackageInfo(packageInfo);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
+            telegramBotService.Verify(s => s.SendMessageToChannelAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
 
         [TestMethod]
-        public void CreatePackageInfo_ReturnsOk_WhenModelIsValid()
+        public async Task CreatePackageInfo_ReturnsOk_WhenModelIsValid()
         {
             // Arrange
-            var controller = new PackageInfoController();
-            var packageInfo = new PackageInfo { Header = "Test Header", Description = "Test Description" };
+            var telegramBotServiceMock = new Mock<ITelegramBotService>();
+            var logger = new NullLogger<PackageInfoController>();
+            var controller = new PackageInfoController(telegramBotServiceMock.Object, logger);
+            var packageInfo = new PackageInfo("Test Header", "Test Description");
 
             // Act
-            var result = controller.CreatePackageInfo(packageInfo);
+            var result = await controller.CreatePackageInfo(packageInfo);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(OkObjectResult));
+            telegramBotServiceMock.Verify(s => s.SendMessageToChannelAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+
         }
     }
 }
