@@ -31,7 +31,7 @@ namespace DiscussionPublisherAPI.Controllers
 
             _logger.LogInformation("Received package info: {message}", message);
 
-            await _telegramBotService.SendMessageToChannelAsync("your_channel_name", message);
+            await _telegramBotService.SendMessageToChannelAsync(message);
 
             _logger.LogInformation("Package Info successfully created.");
             return new OkObjectResult("Package Info successfully created.");

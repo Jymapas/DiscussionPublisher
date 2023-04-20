@@ -24,7 +24,7 @@ namespace DiscussionPublisherAPI.Controllers.Tests
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
-            telegramBotService.Verify(s => s.SendMessageToChannelAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+            telegramBotService.Verify(s => s.SendMessageToChannelAsync(It.IsAny<string>()), Times.Never);
         }
 
         [TestMethod]
@@ -41,7 +41,7 @@ namespace DiscussionPublisherAPI.Controllers.Tests
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(OkObjectResult));
-            telegramBotServiceMock.Verify(s => s.SendMessageToChannelAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            telegramBotServiceMock.Verify(s => s.SendMessageToChannelAsync(It.IsAny<string>()), Times.Once);
 
         }
     }

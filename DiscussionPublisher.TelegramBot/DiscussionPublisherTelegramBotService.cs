@@ -21,15 +21,15 @@ namespace DiscussionPublisher.TelegramBot
             _logger.LogDebug("TelegramBotClient created");
         }
 
-        public async Task SendMessageToChannelAsync(string channelName, string message)
+        public async Task SendMessageToChannelAsync( string message)
         {
             if (_botClient == null)
             {
                 throw new NullReferenceException("_botClient is null. You must call StartBot before calling this method.");
             }
 
-            await _botClient.SendTextMessageAsync(channelName, message);
-            _logger.LogInformation("Message \"{message}\" sent to channel {channelName}", message, channelName);
+            await _botClient.SendTextMessageAsync(Keys.ChannelId, message);
+            _logger.LogInformation("Message \"{message}\" sent to channel {channelId}", message, Keys.ChannelId);
         }
 
         public async Task HandleUpdateAsync(Update update)
