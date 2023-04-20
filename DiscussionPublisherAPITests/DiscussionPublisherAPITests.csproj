@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebAPI\DiscussionPublisherAPI.csproj" />
+    <ProjectReference Include="..\DiscussionPublisherAPI\DiscussionPublisherAPI.csproj" />
   </ItemGroup>
 
 </Project>
