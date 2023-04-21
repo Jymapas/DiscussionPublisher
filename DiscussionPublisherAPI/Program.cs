@@ -36,7 +36,7 @@ public class Program
                     {
                         options.ConfigureHttpsDefaults(httpsOptions =>
                         {
-                            httpsOptions.ServerCertificate = new X509Certificate2(Path.Combine(AppContext.BaseDirectory, "Certificate/certificate.pfx"), "");
+                            httpsOptions.ServerCertificate = new X509Certificate2(Path.Combine(AppContext.BaseDirectory, "Certificate/certificate.pfx"), Keys.CertificatePassword);
                         });
                     });
             })

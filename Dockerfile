@@ -12,4 +12,5 @@ RUN dotnet publish ./DiscussionPublisherAPI/DiscussionPublisherAPI.csproj -c Rel
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
 COPY --from=build /app/out .
+COPY --from=build /app/DiscussionPublisherAPI/Certificate /app/Certificate
 ENTRYPOINT ["dotnet", "DiscussionPublisherAPI.dll"]
