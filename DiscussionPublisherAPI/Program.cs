@@ -44,7 +44,8 @@ public class Program
                                 httpsOptions.ServerCertificate = new X509Certificate2(Path.Combine(AppContext.BaseDirectory, "Certificate/certificate.pfx"), Keys.CertificatePassword);
                             });
                         });
-                    });
+                    })
+                    .UseUrls("http://*:5000", "https://*:5001");
             })
             .ConfigureLogging(loggingBuilder =>
             {
