@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using DiscussionPublisher.TelegramBot;
 using Serilog;
 using Serilog.Events;
@@ -30,7 +31,14 @@ public class Program
         Host.CreateDefaultBuilder(args)
             .ConfigureWebHostDefaults(webBuilder =>
             {
-                webBuilder.UseStartup<Startup>();
+                webBuilder.UseStartup<Startup>()
+                    .UseKestrel(options =>
+                    {
+                        options.ConfigureHttpsDefaults(httpsOptions =>
+                        {
+                            httpsOptions.ServerCertificate = new X509Certificate2(Path.Combine(AppContext.BaseDirectory, "Certificate/certificate.pfx"), "");
+                        });
+                    });
             })
             .ConfigureLogging(loggingBuilder =>
             {
