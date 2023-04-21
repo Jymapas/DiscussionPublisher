@@ -2,6 +2,7 @@ using System.Security.Cryptography.X509Certificates;
 using DiscussionPublisher.TelegramBot;
 using Serilog;
 using Serilog.Events;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace DiscussionPublisherAPI;
 
@@ -34,9 +35,14 @@ public class Program
                 webBuilder.UseStartup<Startup>()
                     .UseKestrel(options =>
                     {
-                        options.ConfigureHttpsDefaults(httpsOptions =>
+                        options.ListenAnyIP(5000, o => o.Protocols = HttpProtocols.Http1AndHttp2);
+                        options.ListenAnyIP(5001, o =>
                         {
-                            httpsOptions.ServerCertificate = new X509Certificate2(Path.Combine(AppContext.BaseDirectory, "Certificate/certificate.pfx"), Keys.CertificatePassword);
+                            o.Protocols = HttpProtocols.Http1AndHttp2;
+                            o.UseHttps(httpsOptions =>
+                            {
+                                httpsOptions.ServerCertificate = new X509Certificate2(Path.Combine(AppContext.BaseDirectory, "Certificate/certificate.pfx"), Keys.CertificatePassword);
+                            });
                         });
                     });
             })
