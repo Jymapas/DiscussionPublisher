@@ -47,7 +47,9 @@ namespace DiscussionPublisherAPI
                     app.UseSwaggerUI();
                 }
 
+
                 app.ApplicationServices.GetService<ITelegramBotService>()?.StartBot();
+                app.ApplicationServices.GetService<ITelegramBotService>()?.SendMessageToChannelAsync("STARTED");
             }
             catch (Exception ex)
             {

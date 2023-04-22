@@ -10,6 +10,7 @@ public class Program
 {
     public static void Main(string[] args)
     {
+        Console.WriteLine("test");
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Debug()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
@@ -33,6 +34,7 @@ public class Program
             .ConfigureWebHostDefaults(webBuilder =>
             {
                 webBuilder.UseStartup<Startup>()
+                    .UseUrls("http://*:5000", "https://*:5001")
                     .UseKestrel(options =>
                     {
                         options.ListenAnyIP(5000, o => o.Protocols = HttpProtocols.Http1AndHttp2);
@@ -44,8 +46,7 @@ public class Program
                                 httpsOptions.ServerCertificate = new X509Certificate2(Path.Combine(AppContext.BaseDirectory, "Certificate/certificate.pfx"), Keys.CertificatePassword);
                             });
                         });
-                    })
-                    .UseUrls("http://*:5000", "https://*:5001");
+                    });
             })
             .ConfigureLogging(loggingBuilder =>
             {
