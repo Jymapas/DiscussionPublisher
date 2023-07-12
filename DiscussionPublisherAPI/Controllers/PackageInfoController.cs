@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 namespace DiscussionPublisherAPI.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class PackageInfoController : ControllerBase
     {
         private readonly ITelegramBotService _telegramBotService;
